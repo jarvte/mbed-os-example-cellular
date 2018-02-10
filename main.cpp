@@ -17,14 +17,14 @@
 #include "mbed.h"
 #include "common_functions.h"
 #include "UDPSocket.h"
-#include "OnboardCellularInterface.h"
+#include "EasyCellularConnection.h"
 
 #define UDP 0
 #define TCP 1
 
 // SIM pin code goes here
-#ifndef MBED_CONF_APP_SIM_PIN_CODE
-# define MBED_CONF_APP_SIM_PIN_CODE    "1234"
+#ifndef MBED_CONF_APP_CELLULAR_SIM_PIN
+# define MBED_CONF_APP_CELLULAR_SIM_PIN    "1234"
 #endif
 
 #ifndef MBED_CONF_APP_APN
@@ -43,7 +43,7 @@
 
 
 // CellularInterface object
-OnboardCellularInterface iface;
+EasyCellularConnection iface;
 
 // Echo server hostname
 const char *host_name = "echo.u-blox.com";
@@ -197,9 +197,9 @@ nsapi_error_t test_send_recv()
 int main()
 {
 
-    iface.modem_debug_on(MBED_CONF_APP_MODEM_TRACE);
+    //iface.modem_debug_on(MBED_CONF_APP_MODEM_TRACE);
     /* Set Pin code for SIM card */
-    iface.set_sim_pin(MBED_CONF_APP_SIM_PIN_CODE);
+    iface.set_sim_pin(MBED_CONF_APP_CELLULAR_SIM_PIN);
 
     /* Set network credentials here, e.g., APN*/
     iface.set_credentials(MBED_CONF_APP_APN, MBED_CONF_APP_USERNAME, MBED_CONF_APP_PASSWORD);
