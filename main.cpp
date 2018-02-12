@@ -66,7 +66,6 @@ void print_function(const char *input_string)
 
 void dot_event()
 {
-
     while (true) {
         wait(4);
         if (!iface.is_connected()) {
@@ -75,7 +74,6 @@ void dot_event()
             break;
         }
     }
-
 }
 
 
@@ -197,14 +195,21 @@ nsapi_error_t test_send_recv()
 int main()
 {
 
+    if (iface.init() != NSAPI_ERROR_OK) {
+        print_function("INIT failed");
+    }
+
+    print_function("\n\nmbed-os-example-cellular\n");
+
     //iface.modem_debug_on(MBED_CONF_APP_MODEM_TRACE);
+
     /* Set Pin code for SIM card */
     iface.set_sim_pin(MBED_CONF_APP_CELLULAR_SIM_PIN);
+    print_function("PIN code set");
 
     /* Set network credentials here, e.g., APN*/
     iface.set_credentials(MBED_CONF_APP_APN, MBED_CONF_APP_USERNAME, MBED_CONF_APP_PASSWORD);
 
-    print_function("\n\nmbed-os-example-cellular\n");
     print_function("Establishing connection ");
     dot_thread.start(dot_event);
 
