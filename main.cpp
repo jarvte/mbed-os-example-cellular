@@ -125,7 +125,7 @@ nsapi_error_t test_send_recv()
 
     retcode = sock.open(&iface);
     if (retcode != NSAPI_ERROR_OK) {
-        snprintf(print_text, PRINT_TEXT_LENGTH, "UDPSocket.open() fails, code: %d\n", retcode);
+        snprintf(print_text, PRINT_TEXT_LENGTH, "Socket.open() fails, code: %d\n", retcode);
         print_function(print_text);
         return -1;
     }
