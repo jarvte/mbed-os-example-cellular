@@ -55,7 +55,9 @@ const char *host_name = "echo.mbedcloudtesting.com";
 const int port = 7;
 
 Mutex PrintMutex;
-Thread dot_thread;
+// create with smaller stack so we don't run out of memory
+Thread dot_thread(osPriorityNormal, 512);
+
 
 #define PRINT_TEXT_LENGTH 128
 char print_text[PRINT_TEXT_LENGTH];
