@@ -35,6 +35,7 @@
 #ifndef MBED_CONF_APP_USERNAME
 # define MBED_CONF_APP_USERNAME    NULL
 #endif
+
 #ifndef MBED_CONF_APP_PASSWORD
 # define MBED_CONF_APP_PASSWORD    NULL
 #endif
@@ -205,12 +206,12 @@ int main()
 
     /* Set Pin code for SIM card */
     iface.set_sim_pin(MBED_CONF_APP_CELLULAR_SIM_PIN);
-    print_function("PIN code set");
+    print_function("PIN code set\n");
 
     /* Set network credentials here, e.g., APN*/
     iface.set_credentials(MBED_CONF_APP_APN, MBED_CONF_APP_USERNAME, MBED_CONF_APP_PASSWORD);
 
-    print_function("Establishing connection ");
+    print_function("Establishing connection\n");
     dot_thread.start(dot_event);
 
     /* Attempt to connect to a cellular network */

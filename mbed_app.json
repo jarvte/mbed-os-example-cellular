@@ -1,6 +1,6 @@
 {
     "config": {
-        "sock-type": "UDP",,
+        "sock-type": "UDP",
         "network-interface":{
             "help": "Options are ETHERNET,CELLULAR",
             "value": "CELLULAR"
