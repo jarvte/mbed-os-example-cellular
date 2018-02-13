@@ -6,7 +6,7 @@ This is an example based on `mbed-os` cellular APIs that demonstrates a TCP or U
 
 This particular cellular application uses a cellular network and network-socket APIs that are part of [`mbed-os`](https://github.com/ARMmbed/mbed-os).
 
-The program uses a [generic cellular modem driver](https://github.com/ARMmbed/mbed-os/tree/master/features/netsocket/cellular/generic_modem_driver) using an external IP stack (LWIP) standard 3GPP AT 27.007 AT commands to setup the cellular modem and registers to the network.
+The program uses a [generic cellular framweork](https://github.com/ARMmbed/mbed-os/tree/master/features/cellular) using an external IP stack (LWIP) standard 3GPP AT 27.007 AT commands to setup the cellular modem and registers to the network.
 
 After registration, the driver opens a point-to-point protocol (PPP) pipe using LWIP with the cellular modem and connects to internet. This driver currently supports UART data connection type only between your cellular modem and MCU.
 
@@ -29,11 +29,11 @@ $ cd mbed-os-example-cellular
 See the file `mbed_app.json` in the root directory of your application. This file contains all the user specific configurations your application needs. Provide the pin code for your SIM card, as well as any APN settings if needed. For example:
 
 ```json
-        "sim-pin-code": {
+        "cellular_sim_pin": {
             "help": "SIM PIN code",
             "value": "\"1234\""
         },
-        "apn": {
+        "cellular_apn": {
             "help": "The APN string to use for this SIM/network, set to 0 if none",
             "value": "\"internet\""
         },
@@ -45,10 +45,9 @@ See the file `mbed_app.json` in the root directory of your application. This fil
             "help": "The password string to use for this APN, set to 0 if none",
             "value": 0
         }
-```  
+```
 
 ### Selecting socket type (TCP or UDP)
-
 
 You can choose which socket type the application should use; however, please note that TCP is a more reliable tranmission protocol. For example:
 
@@ -59,22 +58,22 @@ You can choose which socket type the application should use; however, please not
 
 ```
 
-### Turning modem AT echo trace on
+### Turning logging on/off
 
-If you like details and wish to know about all the AT interactions between the modem and your driver, turn on the modem AT echo trace. Set the `modem_trace` field value to be true.
+If you like details and wish to see more logs, you can set the `mbed-trace.enable` field value to be true. Trace level can be chosen from `trace-level`. Settings trace level to `TRACE_LEVEL_DEBUG` you can see interaction between modem and driver.
 
-```json
-        "modem_trace": {
-            "help": "Turns AT command trace on/off from the cellular modem, defaults to off",
-            "value": true
-        },
+```"trace-level": {
+            "help": "Options are TRACE_LEVEL_ERROR,TRACE_LEVEL_WARN,TRACE_LEVEL_INFO,TRACE_LEVEL_DEBUG",
+            "macro_name": "MBED_TRACE_MAX_LEVEL",
+            "value": "TRACE_LEVEL_INFO"
+        }
 ```
 
 ### Board support
 
-The [generic cellular modem driver](https://github.com/ARMmbed/mbed-os/tree/master/features/netsocket/cellular/generic_modem_driver) this application uses was written using only a standard AT command set. It uses PPP with an Mbed-supported external IP stack. These abilities make the driver essentially generic, or nonvendor specific. However, this particular driver is for onboard-modem types. In other words, the modem exists on the Mbed Enabled target as opposed to plug-in modules (shields). For more details, please see our [Mbed OS cellular documentation](https://os.mbed.com/docs/latest/reference/cellular-api.html).
+The [generic cellular framweork](https://github.com/ARMmbed/mbed-os/tree/master/features/cellular) this application uses was written using only a standard AT command set. It uses PPP with an Mbed-supported external IP stack. These abilities make the driver essentially generic, or nonvendor specific. However, this particular driver is for onboard-modem types. In other words, the modem exists on the Mbed Enabled target as opposed to plug-in modules (shields). For more details, please see our [Mbed OS cellular documentation](https://os.mbed.com/docs/latest/reference/cellular-api.html).
 
-Examples of Mbed Enabled boards with onboard modem chips include [u-blox C027](https://os.mbed.com/platforms/u-blox-C027/) and [MultiTech MTS Dragonfly](https://os.mbed.com/platforms/MTS-Dragonfly/).
+Example of Mbed Enabled board with onboard modem chips include [MultiTech MTS Dragonfly](https://os.mbed.com/platforms/MTS-Dragonfly/).
 
 ## Compiling the application
 
@@ -93,14 +92,16 @@ Attach a serial console emulator of your choice (for example, PuTTY, Minicom or 
 You should see an output similar to this:
 
 ```
-mbed-os-example-cellular, Connecting...
-                                                                             
-                                                                            
+mbed-os-example-cellular
+PIN code set
+Establishing connection
+
+
 Connection Established.
-UDP: Sent 4 Bytes to echo.u-blox.com
+UDP: Sent 4 Bytes to echo.mbedcloudtesting.com
 Received from echo server 4 Bytes
-                                                            
-                                                            
+
+
 Success. Exiting
 
 ```
