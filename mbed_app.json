@@ -1,18 +1,6 @@
 {
     "config": {
-        "sock-type": "UDP",
-        "modem_trace": {
-            "help": "Turns AT command trace on/off from the cellular modem, defaults to off",
-            "value": false
-        },
-        "username": {
-            "help": "The user name string to use for this APN, set to zero if none",
-            "value": 0
-        },
-        "password": {
-            "help": "The password string to use for this APN, set to 0 if none",
-            "value": 0
-        },
+        "sock-type": "UDP",,
         "network-interface":{
             "help": "Options are ETHERNET,CELLULAR",
             "value": "CELLULAR"
