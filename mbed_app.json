@@ -5,14 +5,6 @@
             "help": "Turns AT command trace on/off from the cellular modem, defaults to off",
             "value": false
         },
-        "cellular_sim_pin": {
-	        "help": "Default sim pin",
-	        "value": "\"1234\""
-        },
-        "cellular_apn": {
-            "help": "Access point name, e.g. internet",
-            "value": "\"internet\""
-        },
         "username": {
             "help": "The user name string to use for this APN, set to zero if none",
             "value": 0
