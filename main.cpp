@@ -81,7 +81,6 @@ void dot_event()
     }
 }
 
-
 /**
  * Connects to the Cellular Network
  */
@@ -91,7 +90,6 @@ nsapi_error_t do_connect()
     uint8_t retry_counter = 0;
 
     while (!iface.is_connected()) {
-
         retcode = iface.connect();
         if (retcode == NSAPI_ERROR_AUTH_FAILURE) {
             print_function("\n\nAuthentication Failure. Exiting application\n");
@@ -197,12 +195,29 @@ nsapi_error_t test_send_recv()
     return -1;
 }
 
+void status_callback(nsapi_event_t event, intptr_t param)
+{
+
+    if (param == NSAPI_STATUS_DISCONNECTED) {
+        print_function("Network is down");
+    } else if (param == NSAPI_STATUS_CONNECTING) {
+        print_function("Network is connecting");
+    } else if (param == NSAPI_STATUS_GLOBAL_UP) {
+        print_function("Network is up");
+    } else {
+        print_function("Network in unknown state");
+    }
+
+}
+
 int main()
 {
 
     if (iface.init() != NSAPI_ERROR_OK) {
         print_function("INIT failed");
     }
+
+    iface.attach(&status_callback);
 
     print_function("\n\nmbed-os-example-cellular\n");
 
@@ -220,8 +235,12 @@ int main()
     if (do_connect() == NSAPI_ERROR_OK) {
         nsapi_error_t retcode = test_send_recv();
         if (retcode == NSAPI_ERROR_OK) {
-            print_function("\n\nSuccess. Exiting \n\n");
-            return 0;
+            print_function("\n\nSuccess. Disconnecting.\n\n");
+            if(iface.disconnect() == NSAPI_ERROR_OK)
+            {
+              print_function("\n\nDisconnected. Exiting.\n\n");
+              return 0;
+            }
         }
     }
 
