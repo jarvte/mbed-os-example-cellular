@@ -19,6 +19,8 @@
 #include "common_functions.h"
 #include "UDPSocket.h"
 #include "EasyCellularConnection.h"
+#define TRACE_GROUP  "cellular-example"
+#include "CellularLog.h"
 
 #define UDP 0
 #define TCP 1
@@ -58,15 +60,42 @@ Mutex PrintMutex;
 // create with smaller stack so we don't run out of memory
 Thread dot_thread(osPriorityNormal, 512);
 
+/*
+ *  Mbed trace prints need to be thread safe due to this example and EasyCellularConnection are both threaded.
+*/
+
+static rtos::Mutex trace_mutex;
+
+static void trace_wait()
+{
+    trace_mutex.lock();
+}
+
+static void trace_release()
+{
+    trace_mutex.unlock();
+}
+
+static void trace_open()
+{
+    mbed_trace_init();
+    mbed_trace_mutex_wait_function_set(trace_wait);
+    mbed_trace_mutex_release_function_set(trace_release);
+}
+
+static void trace_close()
+{
+    mbed_trace_free();
+}
 
 #define PRINT_TEXT_LENGTH 128
 char print_text[PRINT_TEXT_LENGTH];
 void print_function(const char *input_string)
 {
-    PrintMutex.lock();
+    trace_mutex.lock();
     printf("%s", input_string);
     fflush(NULL);
-    PrintMutex.unlock();
+    trace_mutex.unlock();
 }
 
 void dot_event()
@@ -199,6 +228,7 @@ nsapi_error_t test_send_recv()
 
 int main()
 {
+    trace_open();
 
     if (iface.init() != NSAPI_ERROR_OK) {
         print_function("INIT failed");
@@ -221,11 +251,14 @@ int main()
         nsapi_error_t retcode = test_send_recv();
         if (retcode == NSAPI_ERROR_OK) {
             print_function("\n\nSuccess. Exiting \n\n");
+            trace_close();
             return 0;
         }
     }
 
     print_function("\n\nFailure. Exiting \n\n");
+
+    trace_close();
     return -1;
 }
 // EOF
