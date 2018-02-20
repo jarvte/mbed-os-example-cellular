@@ -230,10 +230,6 @@ int main()
 {
     trace_open();
 
-    if (iface.init() != NSAPI_ERROR_OK) {
-        print_function("INIT failed");
-    }
-
     print_function("\n\nmbed-os-example-cellular\n");
 
     /* Set Pin code for SIM card */
