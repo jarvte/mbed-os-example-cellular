@@ -57,8 +57,11 @@ const char *host_name = "echo.mbedcloudtesting.com";
 const int port = 7;
 
 Mutex PrintMutex;
+
+#ifndef MBED_CONF_MBED_TRACE_ENABLE
 // create with smaller stack so we don't run out of memory
 Thread dot_thread(osPriorityNormal, 512);
+#endif
 
 /*
  *  Mbed trace prints need to be thread safe due to this example and EasyCellularConnection are both threaded.
@@ -98,6 +101,7 @@ void print_function(const char *input_string)
     trace_mutex.unlock();
 }
 
+#ifndef MBED_CONF_MBED_TRACE_ENABLE
 void dot_event()
 {
     while (true) {
@@ -109,7 +113,7 @@ void dot_event()
         }
     }
 }
-
+#endif
 
 /**
  * Connects to the Cellular Network
@@ -141,6 +145,8 @@ nsapi_error_t do_connect()
 
     print_function("\n\nConnection Established.\n");
 
+    tr_info("IP address %s", iface.get_ip_address());
+
     return NSAPI_ERROR_OK;
 }
 
@@ -156,7 +162,6 @@ nsapi_error_t test_send_recv()
 #else
     UDPSocket sock;
 #endif
-
     retcode = sock.open(&iface);
     if (retcode != NSAPI_ERROR_OK) {
         snprintf(print_text, PRINT_TEXT_LENGTH, "Socket.open() fails, code: %d\n", retcode);
@@ -203,6 +208,7 @@ nsapi_error_t test_send_recv()
 #else
 
     retcode = sock.sendto(sock_addr, (void*) echo_string, sizeof(echo_string));
+
     if (retcode < 0) {
         snprintf(print_text, PRINT_TEXT_LENGTH, "UDPSocket.sendto() fails, code: %d\n", retcode);
         print_function(print_text);
@@ -240,7 +246,10 @@ int main()
     iface.set_credentials(MBED_CONF_APP_APN, MBED_CONF_APP_USERNAME, MBED_CONF_APP_PASSWORD);
 
     print_function("Establishing connection\n");
+
+#ifndef MBED_CONF_MBED_TRACE_ENABLE
     dot_thread.start(dot_event);
+#endif
 
     /* Attempt to connect to a cellular network */
     if (do_connect() == NSAPI_ERROR_OK) {
