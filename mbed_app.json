@@ -9,6 +9,10 @@
             "help": "Options are TRACE_LEVEL_ERROR,TRACE_LEVEL_WARN,TRACE_LEVEL_INFO,TRACE_LEVEL_DEBUG",
             "macro_name": "MBED_TRACE_MAX_LEVEL",
             "value": "TRACE_LEVEL_INFO"
+        },
+        "cellular_use_apn_lookup": {
+            "help": "If set to true then APN lookup is done if credentials are not set by application.",
+            "value": true
         }
 	},
     "target_overrides": {

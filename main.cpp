@@ -129,15 +129,15 @@ nsapi_error_t do_connect()
         if (retcode == NSAPI_ERROR_AUTH_FAILURE) {
             print_function("\n\nAuthentication Failure. Exiting application\n");
             return retcode;
+        } else if (retcode != NSAPI_ERROR_OK && retry_counter > RETRY_COUNT) {
+            snprintf(print_text, PRINT_TEXT_LENGTH, "\n\nFatal connection failure: %d\n", retcode);
+            print_function(print_text);
+            return retcode;
         } else if (retcode != NSAPI_ERROR_OK) {
             snprintf(print_text, PRINT_TEXT_LENGTH, "\n\nCouldn't connect: %d, will retry\n", retcode);
             print_function(print_text);
             retry_counter++;
             continue;
-        } else if (retcode != NSAPI_ERROR_OK && retry_counter > RETRY_COUNT) {
-            snprintf(print_text, PRINT_TEXT_LENGTH, "\n\nFatal connection failure: %d\n", retcode);
-            print_function(print_text);
-            return retcode;
         }
 
         break;
