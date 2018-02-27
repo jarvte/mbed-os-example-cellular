@@ -13,7 +13,11 @@
         "cellular_use_apn_lookup": {
             "help": "If set to true then APN lookup is done if credentials are not set by application.",
             "value": true
-        }
+        },
+        "modem_trace": {
+            "help": "Turns AT command trace on/off from the cellular modem, defaults to off",
+            "value": false
+        }        
 	},
     "target_overrides": {
         "*": {

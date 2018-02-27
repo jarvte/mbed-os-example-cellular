@@ -238,6 +238,8 @@ int main()
 
     print_function("\n\nmbed-os-example-cellular\n");
 
+    iface.modem_debug_on(MBED_CONF_APP_MODEM_TRACE);
+
     /* Set Pin code for SIM card */
     iface.set_sim_pin(MBED_CONF_APP_CELLULAR_SIM_PIN);
     print_function("PIN code set\n");
