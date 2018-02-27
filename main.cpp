@@ -28,11 +28,9 @@
 #if MBED_CONF_APP_NETWORK_INTERFACE == CELLULAR
 #include "EasyCellularConnection.h"
 #include "CellularLog.h"
-#warning "using cellular"
 // CellularInterface object
 EasyCellularConnection iface;
 #else
-#warning "using onboard"
 #include "OnboardCellularInterface.h"
 OnboardCellularInterface iface;
 #endif
@@ -80,6 +78,7 @@ Thread dot_thread(osPriorityNormal, 512);
 
 static rtos::Mutex trace_mutex;
 
+#if MBED_CONF_MBED_TRACE_ENABLE
 static void trace_wait()
 {
     trace_mutex.lock();
@@ -89,6 +88,7 @@ static void trace_release()
 {
     trace_mutex.unlock();
 }
+#endif // #if !MBED_CONF_MBED_TRACE_ENABLE
 
 static void trace_open()
 {
