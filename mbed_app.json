@@ -2,7 +2,7 @@
     "config": {
         "sock-type": "UDP",
         "network-interface":{
-            "help": "Options are ETHERNET,CELLULAR",
+            "help": "Options are ETHERNET,CELLULAR,CELLULAR_ONBOARD",
             "value": "CELLULAR"
         },
         "trace-level": {
@@ -17,7 +17,7 @@
         "modem_trace": {
             "help": "Turns AT command trace on/off from the cellular modem, defaults to off",
             "value": false
-        }        
+        }
 	},
     "target_overrides": {
         "*": {

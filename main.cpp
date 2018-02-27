@@ -18,9 +18,25 @@
 #include "mbed.h"
 #include "common_functions.h"
 #include "UDPSocket.h"
-#include "EasyCellularConnection.h"
+#include "mbed-trace/mbed_trace.h"
+
 #define TRACE_GROUP  "cellular-example"
+
+#define CELLULAR 0
+#define CELLULAR_ONBOARD 1
+
+#if MBED_CONF_APP_NETWORK_INTERFACE == CELLULAR
+#include "EasyCellularConnection.h"
 #include "CellularLog.h"
+#warning "using cellular"
+// CellularInterface object
+EasyCellularConnection iface;
+#else
+#warning "using onboard"
+#include "OnboardCellularInterface.h"
+OnboardCellularInterface iface;
+#endif
+
 
 #define UDP 0
 #define TCP 1
@@ -44,11 +60,6 @@
 
 // Number of retries /
 #define RETRY_COUNT 3
-
-
-
-// CellularInterface object
-EasyCellularConnection iface;
 
 // Echo server hostname
 const char *host_name = "echo.mbedcloudtesting.com";
