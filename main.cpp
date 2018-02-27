@@ -69,7 +69,7 @@ const int port = 7;
 
 Mutex PrintMutex;
 
-#ifndef MBED_CONF_MBED_TRACE_ENABLE
+#if !MBED_CONF_MBED_TRACE_ENABLE
 // create with smaller stack so we don't run out of memory
 Thread dot_thread(osPriorityNormal, 512);
 #endif
@@ -112,7 +112,7 @@ void print_function(const char *input_string)
     trace_mutex.unlock();
 }
 
-#ifndef MBED_CONF_MBED_TRACE_ENABLE
+#if !MBED_CONF_MBED_TRACE_ENABLE
 void dot_event()
 {
     while (true) {
@@ -260,7 +260,7 @@ int main()
 
     print_function("Establishing connection\n");
 
-#ifndef MBED_CONF_MBED_TRACE_ENABLE
+#if !MBED_CONF_MBED_TRACE_ENABLE
     dot_thread.start(dot_event);
 #endif
 

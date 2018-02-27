@@ -10,10 +10,6 @@
             "macro_name": "MBED_TRACE_MAX_LEVEL",
             "value": "TRACE_LEVEL_INFO"
         },
-        "cellular_use_apn_lookup": {
-            "help": "If set to true then APN lookup is done if credentials are not set by application.",
-            "value": true
-        },
         "modem_trace": {
             "help": "Turns AT command trace on/off from the cellular modem, defaults to off",
             "value": false
@@ -24,6 +20,7 @@
             "target.features_add": ["LWIP", "COMMON_PAL"],
             "mbed-trace.enable": false,
             "lwip.ipv4-enabled": true,
+            "lwip.ipv6-enabled": true,
             "lwip.ethernet-enabled": false,
             "lwip.ppp-enabled": true,
             "lwip.tcp-enabled": true,
