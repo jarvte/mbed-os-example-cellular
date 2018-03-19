@@ -90,9 +90,20 @@ static void trace_release()
 }
 #endif // #if !MBED_CONF_MBED_TRACE_ENABLE
 
+static uint32_t cellular_starttime = us_ticker_read() / 1000L;
+static char time_st[50];
+
+static char* trace_time(size_t ss)
+{
+    snprintf(time_st, 49, "[%08lums]", ((us_ticker_read()-cellular_starttime) / 1000L));
+    return time_st;
+}
+
 static void trace_open()
 {
     mbed_trace_init();
+    mbed_trace_prefix_function_set( &trace_time );
+
     mbed_trace_mutex_wait_function_set(trace_wait);
     mbed_trace_mutex_release_function_set(trace_release);
 }
